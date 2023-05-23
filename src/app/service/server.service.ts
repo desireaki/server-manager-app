@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { customResponse } from '../interface/custom-response';
+import { CustomResponse } from '../interface/custom-response';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Server } from '../interface/server';
 import { Status } from '../enum/status.enum';
@@ -15,28 +15,28 @@ export class ServerService {
   //   return this.http.get<customResponse>(`http://localhost:8080/server/list`);
   // }
   private readonly apiUrl = 'http://localhost:8080'; 
-  servers$ = <Observable<customResponse>>this.http.get<customResponse>(`${this.apiUrl}/server/list,`)
+  servers$ = <Observable<CustomResponse>>this.http.get<CustomResponse>(`${this.apiUrl}/server/list,`)
   .pipe(
     tap(console.log),
     catchError(this.handleError)
   );
 
-  save$ = (server: Server) => <Observable<customResponse>>
-  <Observable<customResponse>>this.http.post<customResponse>(`${this.apiUrl}/server/save`, server)
+  save$ = (server: Server) => <Observable<CustomResponse>>
+  <Observable<CustomResponse>>this.http.post<CustomResponse>(`${this.apiUrl}/server/save`, server)
   .pipe(
     tap(console.log),
     catchError(this.handleError)
   );
 
-  ping$ = (ipAddress: string) => <Observable<customResponse>>
-  <Observable<customResponse>>this.http.get<customResponse>(`${this.apiUrl}/server/ping/${ipAddress}`)
+  ping$ = (ipAddress: string) => <Observable<CustomResponse>>
+  <Observable<CustomResponse>>this.http.get<CustomResponse>(`${this.apiUrl}/server/ping/${ipAddress}`)
   .pipe(
     tap(console.log),
     catchError(this.handleError)
   );
 
-  filter$ = (status: Status, response: customResponse) => <Observable<customResponse>>
-  new Observable<customResponse>(
+  filter$ = (status: Status, response: CustomResponse) => <Observable<CustomResponse>>
+  new Observable<CustomResponse>(
     subscriber => {
       console.log(response);
       subscriber.next(
@@ -54,9 +54,13 @@ export class ServerService {
       )
     }
   )
+  .pipe(
+    tap(console.log),
+    catchError(this.handleError)
+  );
 
-  delete$ = (serverId: string) => <Observable<customResponse>>
-  <Observable<customResponse>>this.http.delete<customResponse>(`${this.apiUrl}/server/delete/${serverId}`)
+  delete$ = (serverId: string) => <Observable<CustomResponse>>
+  <Observable<CustomResponse>>this.http.delete<CustomResponse>(`${this.apiUrl}/server/delete/${serverId}`)
   .pipe(
     tap(console.log),
     catchError(this.handleError)
